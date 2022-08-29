@@ -26,7 +26,7 @@ const App: React.FC = () => {
   return (
     <>
       <Box zIndex={100} bgGradient="linear(to-t, #0d0d0c, #69695b)">
-        <Container as="main" h="100%" w="100%" zIndex={1}>
+        <Container as="main" minHeight="100vh" h="100%" w="100%" zIndex={1}>
           <Flex direction="column">
             <Heading
               padding={4}
