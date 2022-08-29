@@ -1,38 +1,49 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import * as React from "react";
+import { Box, Container, Flex, Heading, Image } from "@chakra-ui/react";
+import TodoForm from "./components/TodoForm";
+import { useState } from "react";
+import { TodoList } from "./components/TodoList";
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const addTodo: AddTodo = (newTodo: string) => {
+    if (newTodo !== "") {
+      setTodos([...todos, { text: newTodo, complete: false }]);
+    }
+  };
+
+  const toggleComplete: ToggleComplete = (selectedTodo) => {
+    const updateTodos = todos.map((todo) => {
+      if (todo === selectedTodo) {
+        return { ...todo, complete: !todo.complete };
+      }
+      return todo;
+    });
+    setTodos(updateTodos);
+  };
+
+  return (
+    <>
+      <Box zIndex={100} bgGradient="linear(to-t, #0d0d0c, #69695b)">
+        <Container as="main" h="100%" w="100%" zIndex={1}>
+          <Flex direction="column">
+            <Heading
+              padding={4}
+              zIndex={1}
+              alignSelf="center"
+              color="white"
+              marginBottom="3vh"
+            >
+              Todo app
+            </Heading>
+            <TodoForm addTodo={addTodo} />
+            <TodoList todos={todos} toggleComplete={toggleComplete} />
+          </Flex>
+        </Container>
+      </Box>
+    </>
+  );
+};
+
+export default App;
